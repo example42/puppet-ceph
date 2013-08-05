@@ -197,6 +197,8 @@
 # See README for usage patterns.
 #
 class ceph (
+  $dependency_class    = params_lookup( 'dependency_class' ),
+  $use_cuttlefish      = params_lookup( 'use_cuttlefish' ),
   $my_class            = params_lookup( 'my_class' ),
   $source              = params_lookup( 'source' ),
   $source_dir          = params_lookup( 'source_dir' ),
@@ -239,6 +241,7 @@ class ceph (
   $protocol            = params_lookup( 'protocol' )
   ) inherits ceph::params {
 
+  $bool_use_cuttlefish=any2bool($use_cuttlefish)
   $bool_source_dir_purge=any2bool($source_dir_purge)
   $bool_service_autorestart=any2bool($service_autorestart)
   $bool_absent=any2bool($absent)
@@ -319,6 +322,11 @@ class ceph (
   $manage_file_content = $ceph::template ? {
     ''        => undef,
     default   => template($ceph::template),
+  }
+
+  ### Prerequisites
+  if $ceph::dependency_class {
+    include $ceph::dependency_class
   }
 
   ### Managed resources

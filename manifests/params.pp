@@ -16,6 +16,9 @@ class ceph::params {
 
   ### Application related parameters
 
+  $use_cattlefish = true
+  $dependency_class = 'ceph::dependency'
+
   $package = $::operatingsystem ? {
     default                   => 'ceph',
   }
