@@ -17,13 +17,11 @@ class ceph::params {
   ### Application related parameters
 
   $package = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => 'ceph-compute',
-    default                   => 'openstack-ceph-compute',
+    default                   => 'ceph',
   }
 
   $service = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => 'ceph-compute',
-    default                   => 'openstack-ceph-compute',
+    default                   => 'ceph',
   }
 
   $service_status = $::operatingsystem ? {
@@ -75,7 +73,7 @@ class ceph::params {
   }
 
   $log_file = $::operatingsystem ? {
-    default => [ '/var/log/ceph/ceph-compute.log' , '/var/log/ceph/ceph-manage.log' ],
+    default => [ '/var/log/ceph/ceph.log' ],
   }
 
   $port = '5000'

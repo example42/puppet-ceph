@@ -337,21 +337,22 @@ class ceph (
     noop       => $ceph::bool_noops,
   }
 
-  file { 'ceph.conf':
-    ensure  => $ceph::manage_file,
-    path    => $ceph::config_file,
-    mode    => $ceph::config_file_mode,
-    owner   => $ceph::config_file_owner,
-    group   => $ceph::config_file_group,
-    require => Package[$ceph::package],
-    notify  => $ceph::manage_service_autorestart,
-    source  => $ceph::manage_file_source,
-    content => $ceph::manage_file_content,
-    replace => $ceph::manage_file_replace,
-    audit   => $ceph::manage_audit,
-    noop    => $ceph::bool_noops,
+  if $ceph::manage_file_source or $ceph::manage_file_content {
+    file { 'ceph.conf':
+      ensure  => $ceph::manage_file,
+      path    => $ceph::config_file,
+      mode    => $ceph::config_file_mode,
+      owner   => $ceph::config_file_owner,
+      group   => $ceph::config_file_group,
+      require => Package[$ceph::package],
+      notify  => $ceph::manage_service_autorestart,
+      source  => $ceph::manage_file_source,
+      content => $ceph::manage_file_content,
+      replace => $ceph::manage_file_replace,
+      audit   => $ceph::manage_audit,
+      noop    => $ceph::bool_noops,
+    }
   }
-
   # The whole ceph configuration directory can be recursively overriden
   if $ceph::source_dir {
     file { 'ceph.dir':
