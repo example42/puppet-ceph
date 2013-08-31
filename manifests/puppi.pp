@@ -6,7 +6,7 @@ class ceph::puppi {
     ensure    => $ceph::manage_file,
     variables => $classvars,
     helper    => $ceph::puppi_helper,
-    noop      => $ceph::bool_noops,
+    noop      => $ceph::noops,
   }
 
   # For Puppi 1
@@ -26,7 +26,7 @@ class ceph::puppi {
   }
 
   puppi::log { "ceph":
-    description => "Logs of ceph" ,  
+    description => "Logs of ceph" ,
     log      => "${ceph::log_file}",
   }
 

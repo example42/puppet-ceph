@@ -128,7 +128,7 @@
 # [*noops*]
 #   Set noop metaparameter to true for all the resources managed by the module.
 #   Basically you can run a dryrun for this specific module if you set
-#   this to true. Default: false
+#   this to true. Default: undef
 #
 # Default class params - As defined in ceph::params.
 # Note that these variables are mostly defined and used in the module itself,
@@ -252,7 +252,6 @@ class ceph (
   $bool_firewall=any2bool($firewall)
   $bool_debug=any2bool($debug)
   $bool_audit_only=any2bool($audit_only)
-  $bool_noops=any2bool($noops)
 
   ### Definition of some variables used in the module
   $manage_package = $ceph::bool_absent ? {
@@ -332,7 +331,7 @@ class ceph (
   ### Managed resources
   package { $ceph::package:
     ensure  => $ceph::manage_package,
-    noop    => $ceph::bool_noops,
+    noop    => $ceph::noops,
   }
 
   service { 'ceph':
@@ -342,7 +341,7 @@ class ceph (
     hasstatus  => $ceph::service_status,
     pattern    => $ceph::process,
     require    => Package[$ceph::package],
-    noop       => $ceph::bool_noops,
+    noop       => $ceph::noops,
   }
 
   if $ceph::manage_file_source or $ceph::manage_file_content {
@@ -358,7 +357,7 @@ class ceph (
       content => $ceph::manage_file_content,
       replace => $ceph::manage_file_replace,
       audit   => $ceph::manage_audit,
-      noop    => $ceph::bool_noops,
+      noop    => $ceph::noops,
     }
   }
   # The whole ceph configuration directory can be recursively overriden
@@ -374,7 +373,7 @@ class ceph (
       force   => $ceph::bool_source_dir_purge,
       replace => $ceph::manage_file_replace,
       audit   => $ceph::manage_audit,
-      noop    => $ceph::bool_noops,
+      noop    => $ceph::noops,
     }
   }
 
@@ -400,7 +399,7 @@ class ceph (
         target   => $ceph::monitor_target,
         tool     => $ceph::monitor_tool,
         enable   => $ceph::manage_monitor,
-        noop     => $ceph::bool_noops,
+        noop     => $ceph::noops,
       }
     }
     if $ceph::service != '' {
@@ -412,7 +411,7 @@ class ceph (
         argument => $ceph::process_args,
         tool     => $ceph::monitor_tool,
         enable   => $ceph::manage_monitor,
-        noop     => $ceph::bool_noops,
+        noop     => $ceph::noops,
       }
     }
   }
@@ -429,7 +428,7 @@ class ceph (
       direction   => 'input',
       tool        => $ceph::firewall_tool,
       enable      => $ceph::manage_firewall,
-      noop        => $ceph::bool_noops,
+      noop        => $ceph::noops,
     }
   }
 
@@ -443,7 +442,7 @@ class ceph (
       owner   => 'root',
       group   => 'root',
       content => inline_template('<%= scope.to_hash.reject { |k,v| k.to_s =~ /(uptime.*|path|timestamp|free|.*password.*|.*psk.*|.*key)/ }.to_yaml %>'),
-      noop    => $ceph::bool_noops,
+      noop    => $ceph::noops,
     }
   }
 
