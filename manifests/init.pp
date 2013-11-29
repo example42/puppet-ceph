@@ -33,7 +33,7 @@ class ceph (
 
   $conf_hash                 = undef,
 
-  $dependency_class          = undef,
+  $dependency_class          = 'ceph::dependency',
   $my_class                  = undef,
 
   $monitor_class             = undef,
