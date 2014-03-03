@@ -11,6 +11,8 @@
 #
 class ceph (
 
+  $release                   = 'emperor',
+
   $package_name              = $ceph::params::package_name,
   $package_ensure            = 'present',
 

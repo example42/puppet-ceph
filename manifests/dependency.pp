@@ -16,10 +16,14 @@ class ceph::dependency {
 
   case $::operatingsystem {
     redhat,centos,scientific,oraclelinux : {
-      require yum::repo::cuttlefish
+      class { 'yum::repo::ceph':
+        release => $ceph::release,
+      }
     }
     ubuntu,debian : {
-      require apt::repo::cuttlefish
+      class { 'apt::repo::ceph':
+        release => $ceph::release,
+      }
     }
     default: { }
   }
